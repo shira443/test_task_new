@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nginx:
+    build: ./nginx/Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/var/www/html
+        # - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - php
+    restart: always
+  php:
+    build: ./php/Dockerfile
+    volumes:
+      - ./app:/var/www/html
+    restart: always
+  mysql:
+    build: ./mysql/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+      MYSQL_DATABASE: myapp
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    restart: always
